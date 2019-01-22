@@ -115,3 +115,8 @@ dmypy.json
 .pyre/
 
 btgym/
+close_prices.mp4
+high_prices.mp4
+low_prices.mp4
+open_prices.mp4
+

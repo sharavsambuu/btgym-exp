@@ -1,11 +1,16 @@
 from gym import spaces
 import backtrader as bt
 from btgym import BTgymDataset, BTgymBaseStrategy, BTgymEnv
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import animation
+from pyts.image import GADF
 
 MyCerebro = bt.Cerebro()
 MyCerebro.addstrategy(
         BTgymBaseStrategy,
-        state_shape={'raw': spaces.Box(low=0, high=1, shape=(20,4))},
+        #state_shape={'raw': spaces.Box(low=0, high=1, shape=(20,4))},
+        state_shape={'raw': spaces.Box(low=0, high=1, shape=(120,4))},
         skip_frame=5,
         state_low=None,
         state_high=None,
@@ -36,10 +41,47 @@ done = False
 
 o = env.reset()
 
+def save_video(windows, video_name):
+    image_size = 80
+    gadf = GADF(image_size)
+    X_gadf = gadf.fit_transform(np.array(windows))
+    fig = plt.figure()
+    ims = []
+    for i in range(len(X_gadf)):
+        im = plt.imshow(X_gadf[i], cmap='rainbow', origin='lower', animated=True)
+        ims.append([im])
+    anim = animation.ArtistAnimation(fig, ims, interval=50, repeat_delay=1000)
+    anim.save(video_name)
+
+open_windows  = []
+high_windows  = []
+low_windows   = []
+close_windows = []
 while not done:
     action = env.action_space.sample()
     obs, reward, done, info = env.step(action) 
-    print('ACTION: {}\nREWARD: {}\nINFO: {}'.format(action, reward, info))
+
+    raw = obs['raw']
+    open_window  = []
+    high_window  = []
+    low_window   = []
+    close_window = []
+    for row in raw:
+        open_window.append( row[0])
+        high_window.append( row[1])
+        low_window.append(  row[2])
+        close_window.append(row[3])
+    open_windows.append(open_window)
+    high_windows.append(high_window)
+    low_windows.append(low_window)
+    close_windows.append(close_window)
+
+    #print('ACTION: {}\nREWARD: {}\nINFO: {}'.format(action, reward, info))
+
+save_video(open_windows , "open_prices.mp4")
+save_video(high_windows , "high_prices.mp4")
+save_video(low_windows  , "low_prices.mp4")
+save_video(close_windows, "close_prices.mp4")
 
 env.close()
 
