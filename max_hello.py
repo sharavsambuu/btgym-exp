@@ -45,6 +45,8 @@ def save_video(windows, video_name):
     image_size = 80
     gadf = GADF(image_size)
     X_gadf = gadf.fit_transform(np.array(windows))
+    print(video_name+" : ")
+    print(X_gadf.shape)
     fig = plt.figure()
     ims = []
     for i in range(len(X_gadf)):
@@ -76,12 +78,18 @@ while not done:
     low_windows.append(low_window)
     close_windows.append(close_window)
 
+    gadf = GADF(80)
+    close_gadf = gadf.fit_transform(np.array([close_window]))
+    print(close_gadf.shape)
+    print(close_gadf[0].shape)
+
+
     #print('ACTION: {}\nREWARD: {}\nINFO: {}'.format(action, reward, info))
 
-save_video(open_windows , "open_prices.mp4")
-save_video(high_windows , "high_prices.mp4")
-save_video(low_windows  , "low_prices.mp4")
-save_video(close_windows, "close_prices.mp4")
+save_video(open_windows , "./videos/open_prices.mp4")
+save_video(high_windows , "./videos/high_prices.mp4")
+save_video(low_windows  , "./videos/low_prices.mp4")
+save_video(close_windows, "./videos/close_prices.mp4")
 
 env.close()
 
