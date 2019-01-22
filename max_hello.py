@@ -25,9 +25,22 @@ MyDataset = BTgymDataset(
         time_gap={'hours': 5},
         )
 
-MyEnvironment = BTgymEnv(
+env = BTgymEnv(
         dataset=MyDataset,
         engine=MyCerebro,
         port=5555,
         verbose=1,
         )
+
+done = False
+
+o = env.reset()
+
+while not done:
+    action = env.action_space.sample()
+    obs, reward, done, info = env.step(action) 
+    print('ACTION: {}\nREWARD: {}\nINFO: {}'.format(action, reward, info))
+
+env.close()
+
+
