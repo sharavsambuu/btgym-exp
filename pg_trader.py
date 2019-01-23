@@ -40,7 +40,7 @@ env = BTgymEnv(
         engine=MyCerebro,
         port=5555,
         render_enabled=False,
-        verbose=1,
+        verbose=0,
         )
 
 # Environment Parameters
