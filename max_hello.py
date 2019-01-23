@@ -34,6 +34,7 @@ env = BTgymEnv(
         dataset=MyDataset,
         engine=MyCerebro,
         port=5555,
+        #render_enabled=False,
         verbose=1,
         )
 
@@ -42,6 +43,7 @@ done = False
 o = env.reset()
 
 def save_video(windows, video_name):
+    print("saving sequence as ", video_name)
     image_size = 80
     gadf = GADF(image_size)
     X_gadf = gadf.fit_transform(np.array(windows))
@@ -61,7 +63,9 @@ low_windows   = []
 close_windows = []
 while not done:
     action = env.action_space.sample()
+    print(action)
     obs, reward, done, info = env.step(action) 
+    print("reward ", reward)
 
     raw = obs['raw']
     open_window  = []
@@ -78,21 +82,25 @@ while not done:
     low_windows.append(low_window)
     close_windows.append(close_window)
 
-    gadf = GADF(80)
+    gadf = GADF(84)
     close_gadf = gadf.fit_transform(np.array([close_window]))
+    state = close_gadf[0]
+    print("State shape ====>")
+    print(state.shape)
     #print(close_gadf.shape)
     #print(close_gadf[0].shape)
 
-
     #print('ACTION: {}\nREWARD: {}\nINFO: {}'.format(action, reward, info))
 
-print("status")
-print(env.get_stat())
+#print("status")
+#print(env.get_stat())
+#print(open_windows)
+env.close()
+
 #save_video(open_windows , "./videos/open_prices.mp4")
 #save_video(high_windows , "./videos/high_prices.mp4")
 #save_video(low_windows  , "./videos/low_prices.mp4")
 #save_video(close_windows, "./videos/close_prices.mp4")
 
-env.close()
 
 
