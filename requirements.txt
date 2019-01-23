@@ -4,7 +4,6 @@ atari-py==0.1.7
 backcall==0.1.0
 backtrader==1.9.69.122
 bleach==3.0.2
--e git+https://github.com/Kismuz/btgym.git@1f2edefe10fc0c5fe346b38d0a71b39642aa182f#egg=btgym
 certifi==2018.11.29
 chardet==3.0.4
 cycler==0.10.0
@@ -47,6 +46,7 @@ parso==0.3.1
 pexpect==4.6.0
 pickleshare==0.7.5
 Pillow==5.3.0
+pkg-resources==0.0.0
 prometheus-client==0.5.0
 prompt-toolkit==2.0.7
 protobuf==3.6.1
@@ -57,6 +57,7 @@ Pygments==2.3.0
 PyOpenGL==3.1.0
 pyparsing==2.3.0
 python-dateutil==2.7.5
+pyts==0.7.1
 pytz==2018.7
 PyYAML==3.13
 pyzmq==17.1.2
@@ -66,7 +67,7 @@ scipy==1.1.0
 Send2Trash==1.5.0
 six==1.12.0
 tensorboard==1.12.0
-tensorflow==1.12.0
+tensorflow-gpu==1.12.0
 termcolor==1.1.0
 terminado==0.8.1
 testpath==0.4.2
