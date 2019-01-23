@@ -80,16 +80,18 @@ while not done:
 
     gadf = GADF(80)
     close_gadf = gadf.fit_transform(np.array([close_window]))
-    print(close_gadf.shape)
-    print(close_gadf[0].shape)
+    #print(close_gadf.shape)
+    #print(close_gadf[0].shape)
 
 
     #print('ACTION: {}\nREWARD: {}\nINFO: {}'.format(action, reward, info))
 
-save_video(open_windows , "./videos/open_prices.mp4")
-save_video(high_windows , "./videos/high_prices.mp4")
-save_video(low_windows  , "./videos/low_prices.mp4")
-save_video(close_windows, "./videos/close_prices.mp4")
+print("status")
+print(env.get_stat())
+#save_video(open_windows , "./videos/open_prices.mp4")
+#save_video(high_windows , "./videos/high_prices.mp4")
+#save_video(low_windows  , "./videos/low_prices.mp4")
+#save_video(close_windows, "./videos/close_prices.mp4")
 
 env.close()
 

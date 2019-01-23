@@ -13,6 +13,12 @@ env_params =dict(
         )
 
 gym.envs.register(id='backtrader-v5555', entry_point='btgym:BTgymEnv', kwargs=env_params,)
-MyEnvironment = gym.make('backtrader-v5555')
+env = gym.make('backtrader-v5555')
+
+#print(env.get_stat())
+env.reset()
+res = env.step(2)
+print(res)
+env.close()
 
 
