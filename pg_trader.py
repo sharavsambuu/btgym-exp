@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
 from pyts.image import GADF
-
+import math
 import tensorflow as tf
 import numpy as np
 import gym
@@ -165,7 +165,8 @@ def rollout(batch_size, render):
         # Perform Action
         for i in range(action_repeat):
             state2, reward2, done, info = env.step(action)
-            
+            if math.isnan(reward2):
+                reward2 = 0.0
             reward += reward2
             if done:
                 break
@@ -262,6 +263,7 @@ while step < n_epochs+1:
     print('Training Episodes: {}  Average Reward: {:4.2f}  Total Average: {:4.2f}'.format(n, mean_reward, np.mean(average)))
           
     # Update Network
+    print("UPDATING NEURAL NETWORK >>>>>")
     sess.run(train_op, feed_dict={X:s.reshape(len(s),84,84,1), Y:a, D_R: d_r})
           
     # Write TF Summaries
