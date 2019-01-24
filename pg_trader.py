@@ -149,7 +149,8 @@ def rollout(batch_size, render):
     env.reset()
     state = np.random.rand(84, 84)
     episode_num = 0 
-    action_repeat = 3
+    #action_repeat = 3
+    action_repeat = 1
     reward = 0
     
     while True: 
