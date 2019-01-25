@@ -34,13 +34,11 @@ env = BTgymEnv(
         dataset=MyDataset,
         engine=MyCerebro,
         port=5555,
-        #render_enabled=False,
+        render_enabled=False,
         verbose=1,
         )
 
-done = False
-
-o = env.reset()
+max_episodes=10
 
 def save_video(windows, video_name):
     print("saving sequence as ", video_name)
@@ -57,50 +55,39 @@ def save_video(windows, video_name):
     anim = animation.ArtistAnimation(fig, ims, interval=50, repeat_delay=1000)
     anim.save(video_name)
 
-open_windows  = []
-high_windows  = []
-low_windows   = []
-close_windows = []
-while not done:
-    action = env.action_space.sample()
-    print(action)
-    obs, reward, done, info = env.step(action) 
-    print("reward ", reward)
 
-    raw = obs['raw']
-    open_window  = []
-    high_window  = []
-    low_window   = []
-    close_window = []
-    for row in raw:
-        open_window.append( row[0])
-        high_window.append( row[1])
-        low_window.append(  row[2])
-        close_window.append(row[3])
-    open_windows.append(open_window)
-    high_windows.append(high_window)
-    low_windows.append(low_window)
-    close_windows.append(close_window)
+for _ in range(0, max_episodes):
+    done = False
+    obs = env.reset()
+    open_windows  = []
+    high_windows  = []
+    low_windows   = []
+    close_windows = []
+    while not done:
+        action = env.action_space.sample()
+        obs, reward, done, info = env.step(action) 
+        print("reward ", reward)
+        raw = obs['raw']
+        open_window  = []
+        high_window  = []
+        low_window   = []
+        close_window = []
+        for row in raw:
+            open_window.append( row[0])
+            high_window.append( row[1])
+            low_window.append(  row[2])
+            close_window.append(row[3])
+        open_windows.append(open_window)
+        high_windows.append(high_window)
+        low_windows.append(low_window)
+        close_windows.append(close_window)
+        gadf = GADF(84)
+        close_gadf = gadf.fit_transform(np.array([close_window]))
+        state = close_gadf[0]
 
-    gadf = GADF(84)
-    close_gadf = gadf.fit_transform(np.array([close_window]))
-    state = close_gadf[0]
-    print("State shape ====>")
-    print(state.shape)
-    #print(close_gadf.shape)
-    #print(close_gadf[0].shape)
-
-    #print('ACTION: {}\nREWARD: {}\nINFO: {}'.format(action, reward, info))
-
-#print("status")
-#print(env.get_stat())
-#print(open_windows)
 env.close()
 
-#save_video(open_windows , "./videos/open_prices.mp4")
-#save_video(high_windows , "./videos/high_prices.mp4")
-#save_video(low_windows  , "./videos/low_prices.mp4")
-#save_video(close_windows, "./videos/close_prices.mp4")
+
 
 
 
